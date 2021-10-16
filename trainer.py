@@ -71,31 +71,31 @@ class BertLabeling(pl.LightningModule):
         self.chinese = args.chinese
         self.optimizer = args.optimizer
         self.span_loss_candidates = args.span_loss_candidates
-    @staticmethod
-    def add_model_specific_args(parent_parser):
-        # parent parser中有一些基本的参数
-        parser = argparse.ArgumentParser(parents=[parent_parser], add_help=False)
-        parser.add_argument("--mrc_dropout", type=float, default=0.1,
-                            help="mrc dropout rate")
-        parser.add_argument("--bert_dropout", type=float, default=0.1,
-                            help="bert dropout rate")
-        parser.add_argument("--weight_start", type=float, default=1.0)
-        parser.add_argument("--weight_end", type=float, default=1.0)
-        parser.add_argument("--weight_span", type=float, default=0.1)
-        parser.add_argument("--flat", action="store_true", help="is flat ner")
-        parser.add_argument("--span_loss_candidates", choices=["all", "pred_and_gold", "gold"],
-                            default="all", help="Candidates used to compute span loss")
-        parser.add_argument("--chinese", default=False, action="store_true",
-                            help="is chinese dataset")
-        parser.add_argument("--loss_type", choices=["bce", "dice"], default="bce",
-                            help="loss type")
-        parser.add_argument("--optimizer", choices=["adam", "sgd"], default="adam",
-                            help="loss type")
-        parser.add_argument("--dice_smooth", type=float, default=1e-8,
-                            help="smooth value of dice loss")
-        parser.add_argument("--final_div_factor", type=float, default=1e4,
-                            help="final div factor of linear decay scheduler")
-        return parser
+    # @staticmethod
+    # def add_model_specific_args(parent_parser):
+    #     # parent parser中有一些基本的参数
+    #     parser = argparse.ArgumentParser(parents=[parent_parser], add_help=False)
+    #     # parser.add_argument("--mrc_dropout", type=float, default=0.1,
+    #     #                     help="mrc dropout rate")
+    #     # parser.add_argument("--bert_dropout", type=float, default=0.1,
+    #     #                     help="bert dropout rate")
+    #     # parser.add_argument("--weight_start", type=float, default=1.0)
+    #     # parser.add_argument("--weight_end", type=float, default=1.0)
+    #     # parser.add_argument("--weight_span", type=float, default=0.1)
+    #     # parser.add_argument("--flat", action="store_true", help="is flat ner")
+    #     # parser.add_argument("--span_loss_candidates", choices=["all", "pred_and_gold", "gold"],
+    #     #                     default="all", help="Candidates used to compute span loss")
+    #     # parser.add_argument("--chinese", default=False, action="store_true",
+    #     #                     help="is chinese dataset")
+    #     # parser.add_argument("--loss_type", choices=["bce", "dice"], default="bce",
+    #     #                     help="loss type")
+    #     # parser.add_argument("--optimizer", choices=["adam", "sgd"], default="adam",
+    #     #                     help="loss type")
+    #     # parser.add_argument("--dice_smooth", type=float, default=1e-8,
+    #     #                     help="smooth value of dice loss")
+    #     # parser.add_argument("--final_div_factor", type=float, default=1e4,
+    #     #                     help="final div factor of linear decay scheduler")
+    #     return parser
 
     def configure_optimizers(self):
         """Prepare optimizer and schedule (linear warmup and decay)"""
@@ -302,42 +302,42 @@ class BertLabeling(pl.LightningModule):
         )
         return dataloader
 
-def run_dataloader():
-    """test dataloader"""
-    parser = get_parser()
-    # add model specific args
-    parser = BertLabeling.add_model_specific_args(parser)
-    # add all the available trainer options to argparse
-    # ie: now --gpus --num_nodes ... --fast_dev_run all work in the cli
-    parser = Trainer.add_argparse_args(parser)
-    args = parser.parse_args()#args中已经加了device
-    args.workers = 0
-    args.default_root_dir = "/mnt/data/mrc/train_logs/debug"
-    model = BertLabeling(args)
-    from tokenizers import BertWordPieceTokenizer
-    tokenizer = BertWordPieceTokenizer()
-    loader = model.get_dataloader("dev", limit=10000000)
-    for d in loader:
-        input_ids = d[0][0].tolist()
-        match_labels = d[-1][0]
-        start_positions, end_positions = torch.where(match_labels > 0)
-        start_positions = start_positions.tolist()
-        end_positions = end_positions.tolist()
-        if not start_positions:
-            continue
-        print("="*20)
-        print(tokenizer.decode(input_ids, skip_special_tokens=False))
-        for start, end in zip(start_positions, end_positions):
-            print(tokenizer.decode(input_ids[start: end+1]))
+# def run_dataloader():
+#     """test dataloader"""
+#     parser = get_parser()
+#     # add model specific args
+#     parser = BertLabeling.add_model_specific_args(parser)
+#     # add all the available trainer options to argparse
+#     # ie: now --gpus --num_nodes ... --fast_dev_run all work in the cli
+#     parser = Trainer.add_argparse_args(parser)
+#     args = parser.parse_args()#args中已经加了device
+#     args.workers = 0
+#     args.default_root_dir = "/mnt/data/mrc/train_logs/debug"
+#     model = BertLabeling(args)
+#     from tokenizers import BertWordPieceTokenizer
+#     tokenizer = BertWordPieceTokenizer()
+#     loader = model.get_dataloader("dev", limit=10000000)
+#     for d in loader:
+#         input_ids = d[0][0].tolist()
+#         match_labels = d[-1][0]
+#         start_positions, end_positions = torch.where(match_labels > 0)
+#         start_positions = start_positions.tolist()
+#         end_positions = end_positions.tolist()
+#         if not start_positions:
+#             continue
+#         print("="*20)
+#         print(tokenizer.decode(input_ids, skip_special_tokens=False))
+#         for start, end in zip(start_positions, end_positions):
+#             print(tokenizer.decode(input_ids[start: end+1]))
 
 def main():
     """main"""
     parser = get_parser()
     # add model specific args
-    parser = BertLabeling.add_model_specific_args(parser)
+    # parser = BertLabeling.add_model_specific_args(parser)
     # add all the available trainer options to argparse
     # ie: now --gpus --num_nodes ... --fast_dev_run all work in the cli
-    parser = Trainer.add_argparse_args(parser)
+    # parser = Trainer.add_argparse_args(parser)
     args = parser.parse_args()
     project_name = args.task_name + '_' + str(args.percent)
     wandb.init(config=parser, project=project_name, entity='lxc')
