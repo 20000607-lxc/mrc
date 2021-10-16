@@ -95,7 +95,6 @@ class BertLabeling(pl.LightningModule):
                             help="smooth value of dice loss")
         parser.add_argument("--final_div_factor", type=float, default=1e4,
                             help="final div factor of linear decay scheduler")
-
         return parser
 
     def configure_optimizers(self):
@@ -334,15 +333,14 @@ def run_dataloader():
 def main():
     """main"""
     parser = get_parser()
-    args = parser.parse_args()
-    project_name = args.task_name + '_' + str(args.percent)
-    wandb.init(config=parser, project=project_name, entity='lxc')
-
     # add model specific args
     parser = BertLabeling.add_model_specific_args(parser)
     # add all the available trainer options to argparse
     # ie: now --gpus --num_nodes ... --fast_dev_run all work in the cli
     parser = Trainer.add_argparse_args(parser)
+    args = parser.parse_args()
+    project_name = args.task_name + '_' + str(args.percent)
+    wandb.init(config=parser, project=project_name, entity='lxc')
     model = BertLabeling(args)
     if args.pretrained_checkpoint:
         model.load_state_dict(torch.load(args.pretrained_checkpoint,
@@ -352,7 +350,7 @@ def main():
         save_top_k=1,
         monitor="span_f1",
         period=-1,
-        prefix = "bert_",
+        prefix="bert_",
         mode="max",
     )
 
