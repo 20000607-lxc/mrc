@@ -266,13 +266,13 @@ class BertLabeling(pl.LightningModule):
         return self.validation_epoch_end(outputs)
 
     def train_dataloader(self) -> DataLoader:
-        return self.get_dataloader("train", self.args.percent, 1000)
+        return self.get_dataloader("train", self.args.percent, 10000000)
 
     def val_dataloader(self):
-        return self.get_dataloader("dev",  100)
+        return self.get_dataloader("dev",  10000000)
 
     def test_dataloader(self):
-        return self.get_dataloader("test", 100)
+        return self.get_dataloader("test", 10000000)
         # return self.get_dataloader("dev")
 
     def get_dataloader(self, prefix="train", percent=10, limit: int = None) -> DataLoader:
