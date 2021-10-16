@@ -342,6 +342,7 @@ def main():
 
     args = parser.parse_args()
     project_name = args.task_name + '_' + str(args.percent)
+    print(project_name)
     wandb.init(config=parser, project=project_name, entity='lxc')
     model = BertLabeling(args)
     if args.pretrained_checkpoint:
