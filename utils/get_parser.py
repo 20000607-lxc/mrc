@@ -7,6 +7,7 @@ def get_parser() -> argparse.ArgumentParser:
     """
     parser = argparse.ArgumentParser(description="Training")
     parser.add_argument("--data_dir", type=str, default="datasets/ace2005", help="data dir")
+    parser.add_argument("--task_name", type=str, default="ace2005", help="data dir")
     parser.add_argument("--device", type=int, default=1)
     parser.add_argument("--percent", type=int, default=10)
     parser.add_argument("--bert_config_dir", type=str, default="bert-base-cased", help="bert config dir")

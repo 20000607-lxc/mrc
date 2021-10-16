@@ -335,7 +335,8 @@ def main():
     """main"""
     parser = get_parser()
     args = parser.parse_args()
-    wandb.init(config=parser, project=args.data_dir, entity='lxc')
+    project_name = args.task_name + '_' + str(args.percent)
+    wandb.init(config=parser, project=project_name, entity='lxc')
 
     # add model specific args
     parser = BertLabeling.add_model_specific_args(parser)

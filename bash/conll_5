@@ -15,5 +15,6 @@
 cd /scratch/zt2080/shizhe/eres/mrc
 python trainer.py
     --data_dir=datasets/conll03\
+    --task_name=conll-mrc\
     --percent=5\
     --device=0\

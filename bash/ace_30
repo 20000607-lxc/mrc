@@ -15,5 +15,6 @@
 cd /scratch/zt2080/shizhe/eres/mrc
 python trainer.py
     --data_dir=datasets/ace05\
+    --task_name=ace05\
     --percent=30\
     --device=0\
