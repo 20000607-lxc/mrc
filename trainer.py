@@ -337,7 +337,7 @@ def main():
     # parser = BertLabeling.add_model_specific_args(parser)
     # add all the available trainer options to argparse
     # ie: now --gpus --num_nodes ... --fast_dev_run all work in the cli
-    # parser = Trainer.add_argparse_args(parser)
+    parser = Trainer.add_argparse_args(parser)
     args = parser.parse_args()
     project_name = args.task_name + '_' + str(args.percent)
     wandb.init(config=parser, project=project_name, entity='lxc')
