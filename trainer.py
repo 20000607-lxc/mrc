@@ -360,7 +360,7 @@ def main():
         args,
         checkpoint_callback=checkpoint_callback,
         gpus=[args.device],
-        max_epochs=10,
+        max_epochs=30,
         val_check_interval=0.5
     )
     # 遇事不绝看tutorial 不同模块相差很大 不要按照经验改 先去熟悉新工具的接口
