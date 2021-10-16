@@ -334,14 +334,14 @@ def run_dataloader():
 def main():
     """main"""
     parser = get_parser()
-    wandb.init(config=parser, project='mrc', entity='lxc')
+    args = parser.parse_args()
+    wandb.init(config=parser, project=args.data_dir, entity='lxc')
 
     # add model specific args
     parser = BertLabeling.add_model_specific_args(parser)
     # add all the available trainer options to argparse
     # ie: now --gpus --num_nodes ... --fast_dev_run all work in the cli
     parser = Trainer.add_argparse_args(parser)
-    args = parser.parse_args()
     model = BertLabeling(args)
     if args.pretrained_checkpoint:
         model.load_state_dict(torch.load(args.pretrained_checkpoint,
